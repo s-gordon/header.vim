@@ -48,9 +48,6 @@ function s:filetype ()
   elseif l:ft ==# 'markdown'
       let s:comment = "#"
       let s:type = s:comment . " TITLE"
-  else
-    let s:comment = "#"
-    let s:type = s:comment . " Text File"
   endif
   unlet s:file
 
@@ -61,16 +58,13 @@ endfunction
 " Insert the header when we create a new file.
 " VARIABLES:
 " author = User who create the file.
-" file = Path to the file.
 " created = Date of the file creation.
-" modified = Date of the last modification.
 
 function s:insert ()
 
   call s:filetype ()
 
   let s:author = s:comment .    " AUTHOR:   " . ("Shane Gordon")
-  let s:created = s:comment .   " CREATED:  " . strftime ("%Y-%m-%d %H:%M:%S")
   let s:created = s:comment .   " CREATED:  " . strftime ("%Y-%m-%d %H:%M:%S")
 
   call append (0, s:type)
@@ -83,5 +77,8 @@ function s:insert ()
   unlet s:created
 
 endfunction
-
-autocmd BufNewFile * call s:insert ()
+  
+" This might not be the best way to do it, but it works for now.
+for g:ext in ['sh', 'py', 'vim', 'md', 'markdown', 'pl']
+  autocmd BufNewFile "*." . g:ext call s:insert ()
+endfor
